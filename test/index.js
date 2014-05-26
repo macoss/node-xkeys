@@ -30,6 +30,7 @@ describe('#XK_80', function() {
     xkeys.XK_80.should.not.eql(value);
   });
 });
+
 describe('#open', function() {
   it('should return and error if path is empty', function() {
     xkeys.open.should.throwError('The path is required');
@@ -45,3 +46,19 @@ describe('#open', function() {
     }
   });
 });
+
+describe('#close', function() {
+  it('should return an error if the device is null', function() {
+    xkeys.close().should.throwError();
+  });
+  it('should close a device if one is connected', function() {
+    var dev_list = xkeys.devices("");
+    if(dev_list.length) {
+      xkeys.open(dev_list[0].path)
+      xkeys.close().should.be.true;
+    } else {
+      return true.should.be.true;
+    }
+  });
+});
+

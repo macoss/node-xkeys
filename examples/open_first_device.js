@@ -1,11 +1,11 @@
-var HID = require('node-hid');
+var xkeys = require('../index');
 
-dev_list = HID.devices(1523, "");
+dev_list = xkeys.devices();
 
 if(dev_list.length) {
-  device = HID.HID(1523, dev_list[0].productId);
+  xkeys.open(dev_list[0].path);
   console.log('device opened');
-  HID.close();
+  xkeys.close();
 } else {
   console.log('No XKeys found');
 }

@@ -1,5 +1,5 @@
 var HID = require('node-hid');
-var device;
+var device = null;
 
 module.exports = {
   devices: function(product_id) {
@@ -20,15 +20,22 @@ module.exports = {
   open: function(path) {
     if(path)
     {
-      device = HID.HID(path);
+      device = new HID.HID(path);
       return true;
 
     } else {
       throw Error("The path is required");
     }
+  },
+
+  close: function() {
+    if(device) {
+      device.close();
+      return true;
+    } else {
+      throw Error("No device was open");
+    }
   }
-
-
 };
 
 Object.defineProperty(module.exports, "XK_24", {
