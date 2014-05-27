@@ -68,3 +68,16 @@ describe('#close', function() {
   });
 });
 
+describe('#toggleAllBacklights', function() {
+  it('should return true if a device is found', function() {
+    var dev_list = xkeys.devices("");
+    if(dev_list.length) {
+      xkeys.open(dev_list[0].path);
+      xkeys.toggleAllBacklights();
+      xkeys.close();
+    } else {
+      return true.should.be.true;
+    }
+  });
+});
+

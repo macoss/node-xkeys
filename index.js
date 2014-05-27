@@ -1,5 +1,12 @@
 var HID = require('node-hid');
 var device = null;
+var message = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+var clearMessage = function() {
+  message.forEach(function(item) {
+    item = 0;
+  });
+};
 
 module.exports = {
   devices: function(type) {
@@ -46,6 +53,14 @@ module.exports = {
     } else {
       throw Error("No devices of the type specified was found");
     }
+  },
+
+  //Toggle all the backlights
+  toggleAllBacklights: function() {
+    clearMessage();
+    message[1] = 184;
+    device.write(message);
+    return true;
   }
 };
 
