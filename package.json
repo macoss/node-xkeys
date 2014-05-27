@@ -24,9 +24,10 @@
   },
   "homepage": "https://github.com/macoss/node-xkeys",
   "devDependencies": {
-    "chai": "^1.9.1",
-    "expect": "^0.1.1",
     "mocha": "^1.19.0",
     "should": "^3.3.2"
+  },
+  "dependencies": {
+    "node-hid": ">0.3.1"
   }
 }

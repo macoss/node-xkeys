@@ -47,6 +47,12 @@ describe('#open', function() {
   });
 });
 
+describe('#openFirst', function() {
+  it('should require a type to open', function() {
+    xkeys.openFirst.should.throwError();
+  });
+});
+
 describe('#close', function() {
   it('should return an error if the device is null', function() {
     xkeys.close().should.throwError();

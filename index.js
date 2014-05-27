@@ -2,8 +2,8 @@ var HID = require('node-hid');
 var device = null;
 
 module.exports = {
-  devices: function(product_id) {
-    device_list = HID.devices(1523,product_id);
+  devices: function(type) {
+    device_list = HID.devices(1523,type);
     
     var xkeys_list = [];
 
@@ -34,6 +34,17 @@ module.exports = {
       return true;
     } else {
       throw Error("No device was open");
+    }
+  },
+
+  // Open the first device of the passed in product id
+  openFirst: function(type) {
+    var device_list = HID.devices(1523,type);
+
+    if(device_list.length) {
+      device = new HID.HID(device_list[0].path);
+    } else {
+      throw Error("No devices of the type specified was found");
     }
   }
 };
