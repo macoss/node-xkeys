@@ -82,6 +82,15 @@ module.exports = {
     message[1] = 184;
     device.write(message);
     return true;
+  },
+
+  //Save EEPROM backlight state to the EEPROM
+  saveEepromBacklightState: function() {
+    clearMessage();
+    message[1] = 199;
+    message[2] = 1;
+    device.write(message);
+    return true;
   }
 };
 
