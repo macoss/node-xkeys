@@ -28,6 +28,7 @@
     "should": "^3.3.2"
   },
   "dependencies": {
-    "node-hid": ">0.3.1"
+    "node-hid": ">0.3.1",
+    "sleep": "^1.1.5"
   }
 }

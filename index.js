@@ -91,6 +91,24 @@ module.exports = {
     message[2] = 1;
     device.write(message);
     return true;
+  },
+
+  //Set the LED state
+  setLedState: function(green, red) {
+    clearMessage();
+    message[1] = 186;
+    if(green && red) {
+      message[2] = 3;
+    } else {
+      if(red) {
+        message[2] = 1;
+      }
+      if(green) {
+        message[2] = 2;
+      }
+    }
+    device.write(message);
+    return true;
   }
 };
 
