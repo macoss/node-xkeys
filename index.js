@@ -95,18 +95,18 @@ module.exports = {
 
   //Set the LED state
   setLedState: function(green, red) {
+    var mask = 0;
     clearMessage();
     message[1] = 186;
-    if(green && red) {
-      message[2] = 3;
-    } else {
-      if(red) {
-        message[2] = 1;
-      }
-      if(green) {
-        message[2] = 2;
-      }
+    //flip the bits in the mask if the LEDs are true
+    if(green) {
+      mask = mask | 64;
     }
+    
+    if(red) {
+      mask = mask | 128;
+    }
+    message[2] = mask;
     device.write(message);
     return true;
   }
