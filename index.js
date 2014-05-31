@@ -109,6 +109,42 @@ module.exports = {
     message[2] = mask;
     device.write(message);
     return true;
+  },
+
+  //Set the Green LED state
+  setGreenLed: function(on, flash) {
+    clearMessage();
+    message[1] = 179;
+    message[2] = 6;
+    if(on) {
+      if(flash) {
+        message[3] = 2;
+      } else {
+        message[3] = 1;
+      }
+    } else {
+      message[3] = 0;
+    }
+    device.write(message);
+    return true;
+  },
+
+  //Set the Red LED state
+  setRedLed: function(on, flash) {
+    clearMessage();
+    message[1] = 179;
+    message[2] = 7;
+    if(on) {
+      if(flash) {
+        message[3] = 2;
+      } else {
+        message[3] = 1;
+      }
+    } else {
+      message[3] = 0;
+    }
+    device.write(message);
+    return true;
   }
 };
 
