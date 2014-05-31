@@ -61,6 +61,7 @@ module.exports = {
   close: function() {
     if(device) {
       device.close();
+      device = null;
       return true;
     } else {
       throw Error("No device was open");

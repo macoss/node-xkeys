@@ -92,6 +92,7 @@ describe('#open', function() {
     var dev_list = xkeys.devices("");
     if(dev_list.length) {
       xkeys.open(dev_list[0].path).should.be.true;
+      xkeys.close();
     } else {
       return true.should.be.true;
     }
@@ -112,8 +113,9 @@ describe('#close', function() {
   it('should close a device if one is connected', function() {
     var dev_list = xkeys.devices("");
     if(dev_list.length) {
-      xkeys.open(dev_list[0].path)
-      xkeys.close.should.be.true;
+      xkeys.open(dev_list[0].path);
+      var result = xkeys.close();
+      result.should.be.true;
     } else {
       return true.should.be.true;
     }
