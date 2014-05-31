@@ -69,6 +69,11 @@ module.exports = {
 
   // Open the first device of the passed in product id
   openFirst: function(type) {
+    
+    if(!type) {
+      throw Error('Please specify an XKeys type of either xkeys.XK_24 of xkeys.XK_80');
+    }
+    
     var device_list = HID.devices(1523,type);
 
     if(device_list.length) {
