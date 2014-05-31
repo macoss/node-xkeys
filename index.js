@@ -22,6 +22,8 @@
 var HID = require('node-hid');
 var device = null;
 var message = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var xk24_buttons = [0,1,2,3,4,5,8,9,10,11,12,13,16,17,18,19,20,21,24,25,26,27,28,29];
+var xk80_buttons = Array.apply(null, Array(80)).map(function (_, i) {return i;});
 
 var clearMessage = function() {
   message.forEach(function(item) {
@@ -155,9 +157,23 @@ Object.defineProperty(module.exports, "XK_24", {
   configurable: false
 });
 
+Object.defineProperty(module.exports, "XK_24_BUTTONS", {
+  value: xk24_buttons,
+  enumerable: true,
+  writeable: false,
+  configurable: false
+});
+
 Object.defineProperty(module.exports, "XK_80", {
   value: 1089,
   enumerable: true,
   writable: false,
+  configurable: false
+});
+
+Object.defineProperty(module.exports, "XK_80_BUTTONS", {
+  value: xk80_buttons,
+  enumerable: true,
+  writeable: false,
   configurable: false
 });

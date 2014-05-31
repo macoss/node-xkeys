@@ -52,6 +52,36 @@ describe('#XK_80', function() {
   });
 });
 
+describe('#XK_24_BUTTONS', function() {
+
+  it('should have 24 elements', function() {
+    xkeys.XK_24_BUTTONS.length.should.eql(24);
+  });
+
+  it('should not change', function() {
+    xkeys.XK_24_BUTTONS = [];
+    xkeys.XK_24_BUTTONS.should.not.eql([]);
+  });
+
+  it('should not have elements with a value of 6,7,14,15,22,23', function() {
+    var test_list = [6,7,14,15,22,23];
+    test_list.forEach(function(item) {
+      xkeys.XK_24_BUTTONS.indexOf(item).should.eql(-1);
+    });
+  });
+
+});
+
+describe('#XK_80_BUTTONS', function() {
+  it('should have 80 elements', function() {
+    xkeys.XK_80_BUTTONS.length.should.eql(80);
+  });
+  it('should not change', function() {
+    xkeys.XK_80_BUTTONS = [];
+    xkeys.XK_80_BUTTONS.should.not.eql([]);
+  });
+});
+
 describe('#open', function() {
   it('should return and error if path is empty', function() {
     xkeys.open.should.throwError('The path is required');
