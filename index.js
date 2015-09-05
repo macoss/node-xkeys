@@ -21,15 +21,78 @@
 
 var HID = require('node-hid');
 var device = null;
+var device_type = null; // Assign the device type on open
 var message = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var xk24_type = 1029;
 var xk24_buttons = [0,1,2,3,4,5,8,9,10,11,12,13,16,17,18,19,20,21,24,25,26,27,28,29];
+var xk24_backlight_offset = 32;
+var xk80_type = 1089;
 var xk80_buttons = Array.apply(null, Array(80)).map(function (_, i) {return i;});
+var xk80_backlight_offset = 80;
+var buttons = null; // Stores the current buttons based on the device_type.
 
 var clearMessage = function() {
   message.forEach(function(item) {
     item = 0;
   });
 };
+
+var setButtons = function() {
+	switch(device_type) {
+		case xk24_type:
+			buttons = xk24_buttons;
+			break;
+		case xk80_type:
+			buttons = xk80_buttons;
+	}
+};
+
+var set_blue_backlight = function(device,button, on, flash) {
+	  clearMessage();
+	  message[1] = 181;
+	  message[2] = button;
+	  if(on) {
+		  if(flash) {
+			  message[3] = 2; //flash
+		  } else {
+			  message[3] = 1; //on
+		  }
+	  } else {
+		 message[3] = 0;
+	  }
+	  device.write(message);
+	  return true;
+};
+
+var set_red_backlight = function(device, button, on, flash) {
+	  clearMessage();
+	  message[1] = 181;
+	  
+	  var offset = 0;
+	  // Which device do we have?
+	  switch(device_type) {
+		 case xk24_type:
+			 offset = xk24_backlight_offset;
+		 	 break;
+		 case xk80_type:
+			 offset = xk80_backlight_offset;
+	  }
+	  message[2] = button + offset;
+
+	  if(on) {
+		  if(flash) {
+			  message[3] = 2; //flash
+		  } else {
+			  message[3] = 1; //on
+		  }
+	  } else {
+		 message[3] = 0;
+	  }
+	  device.write(message);
+	  return true;
+};
+
+
 
 module.exports = {
   devices: function(type) {
@@ -50,7 +113,17 @@ module.exports = {
   open: function(path) {
     if(path)
     {
+		device_list = HID.devices();
+		device_list.forEach(function(entry) {
+			if(entry.path == path) {
+				device_type = entry.productId;
+			}
+		});
+		if(!device_type) {
+			throw Error("Device not found with that path");
+		}
       device = new HID.HID(path);
+	  setButtons();
       return true;
 
     } else {
@@ -78,7 +151,8 @@ module.exports = {
     var device_list = HID.devices(1523,type);
 
     if(device_list.length) {
-      device = new HID.HID(device_list[0].path);
+      this.open(device_list[0].path);
+
     } else {
       throw Error("No devices of the type specified was found");
     }
@@ -153,11 +227,33 @@ module.exports = {
     }
     device.write(message);
     return true;
-  }
+  },
+ 
+  	setBlueBackLight: function(button, on, flash) {
+	   set_blue_backlight(device, button, on, flash);
+   	},	   
+
+  	setRedBackLight: function(button, on, flash) {
+		set_red_backlight(device, button, on, flash);
+	},
+	
+	setAllBlueBackLights: function(on, flash) {
+		buttons.forEach( function(button) {
+			set_blue_backlight(device, button, on, flash);
+		});
+	},
+
+	setAllRedBackLights: function(on, flash) {
+		buttons.forEach( function(button) {
+			set_red_backlight(device, button, on, flash);
+		});
+	}
+
+
 };
 
 Object.defineProperty(module.exports, "XK_24", {
-  value: 1029,
+  value: xk24_type,
   enumerable: true,
   writable: false,
   configurable: false
@@ -171,7 +267,7 @@ Object.defineProperty(module.exports, "XK_24_BUTTONS", {
 });
 
 Object.defineProperty(module.exports, "XK_80", {
-  value: 1089,
+  value: xk80_type,
   enumerable: true,
   writable: false,
   configurable: false
